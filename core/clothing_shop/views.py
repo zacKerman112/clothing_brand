@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Cloth
-
+from .forms import RegistrtionForm
 
 class ClothListView(ListView):
     model = Cloth
@@ -32,3 +32,16 @@ class ClothDeleteView(DeleteView):
     model = Cloth
     template_name = 'cloth_confirm_delete.html'
     success_url = reverse_lazy('cloth_list')
+
+
+
+def register(request):
+    if request.method == 'POST':
+        form = RegistrtionForm(request.POST , request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    else:
+        form = RegistrtionForm()    
+        
+    return render(request, 'registration/register.html', {'form': form})    
