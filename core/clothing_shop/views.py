@@ -29,17 +29,25 @@ class ClothDeleteView(DeleteView):
     template_name = 'cloth_confirm_delete.html'
     success_url = reverse_lazy('cloth_list')
     
-# 1. ФУНКЦІЯ ДЛЯ СПИСКУ (Головна)
+
 def cloth_list(request):
     items = Cloth.objects.all()
     query = request.GET.get('q')
     if query:
         items = items.filter(title__icontains=query)
+        
+    sort = request.GET.get('sort')
+    if sort == 'price_asc':
+        items = items.order_by('price')
+    elif sort == 'price_desc':
+        items = items.order_by('-price')
+        
+    return render(request, 'index.html', {'items': items})    
     
-    # Переконайся, що тут 'index.html'
+    
     return render(request, 'index.html', {'items': items})
 
-# 2. ФУНКЦІЯ ДЛЯ ДЕТАЛЕЙ
+
 def cloth_detail(request, pk):
     item = get_object_or_404(Cloth, pk=pk)
     return render(request, 'cloth_detail.html', {'item': item})
