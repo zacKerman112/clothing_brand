@@ -1,36 +1,42 @@
 {% extends "base.html" %}
 
-{% block title %}Clothes shop{% endblock %}
-
 {% block content %}
-<div class="jumbotron text-center">
-    <h1 class="display-4">Welcome to our shop!</h1>
-    <p class="lead">We will have some stunning new clothes shortly.</p>
-    <hr class="my-4">
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Наші новинки</h1>
     
-    <a class="btn btn-success mb-3" href="{% url 'cloth_create' %}">Add items</a>
+    <div class="d-flex gap-2">
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                Сортувати за ціною
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-menu-item p-2 text-decoration-none d-block" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}sort=price_asc">Від дешевих до дорогих</a></li>
+                <li><a class="dropdown-menu-item p-2 text-decoration-none d-block" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}sort=price_desc">Від дорогих до дешевих</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-menu-item p-2 text-decoration-none d-block text-danger" href="{% url 'cloth_list' %}">Скинути</a></li>
+            </ul>
+        </div>
 
-    <div class="row">
-        {% for item in clothes %}
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">{{ item.title }} ({{ item.brand.name }})</h5>
-                    <p class="card-text">
-                        Цена: {{ item.price }} грн<br>
-                        Остаток: {{ item.stock_quantity }} шт.
-                    </p>
-                    <p class="text-muted">Стоимость склада: {{ item.get_total_value }} грн</p>
-                    
-                    <a href="{% url 'cloth_detail' item.pk %}" class="btn btn-primary btn-sm">Details</a>
-                    <a href="{% url 'cloth_update' item.pk %}" class="btn btn-warning btn-sm">Update</a>
-                    <a href="{% url 'cloth_delete' item.pk %}" class="btn btn-danger btn-sm">Delete</a>
-                </div>
+        <a href="{% url 'cloth_create' %}" class="btn btn-success">+ Додати товар</a>
+    </div>
+</div>
+
+<div class="row">
+    {% for item in items %}  <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ item.title }}</h5>
+                
+                <p class="text-muted small">Бренд: {{ item.brand.name }}</p>
+                
+                <p class="fw-bold">{{ item.price }} грн</p>
+                
+                <a href="{% url 'cloth_detail' item.pk %}" class="btn btn-sm btn-primary">Детальніше</a>
             </div>
         </div>
-        {% empty %}
-        <p>There are no clothes yet. Be the first one to add them!</p>
-        {% endfor %}
     </div>
+    {% empty %}
+        <p class="text-center">Товари не знайдені в базі або не передані в шаблон.</p>
+    {% endfor %}
 </div>
 {% endblock %}

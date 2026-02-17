@@ -1,22 +1,22 @@
 from django import forms
-from login.models import CustomUser
 
-class RegistrtionForm(forms.ModelForm):
-    age = forms.IntegerField(label="Your age" , min_value=0)
+class RegistrationForm(forms.ModelForm):
+    age = forms.IntegerField(label="Your age", min_value=0)
 
     class Meta:
         model = CustomUser
-        fields = ['username' , 'email' , 'avatar']
+        fields = ['username', 'email', 'avatar']
 
+ 
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        if 'admin' in username.lower():
-            raise forms.ValidationError("the username mustn`t contain a word admin!")
+        if username and "admin" in username.lower():
+            raise forms.ValidationError("The name can't contain 'admin'.")
         return username
-    
 
-    def age_limit(self):
+   
+    def clean_age(self):
         age = self.cleaned_data.get('age')
-        if age < 18:
-            raise forms.ValidationError('Our apologies but this site is meant only for adults')
+        if age is not None and age < 18:
+            raise forms.ValidationError("You're under 18, adults only.")
         return age

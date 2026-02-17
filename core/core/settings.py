@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'clothing_shop',
-    'login',
+    'login', 
 ]
 
 MIDDLEWARE = [
@@ -117,8 +117,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 AUTH_USER_MODEL = "login.CustomUser"
-
 LOGIN_REDIRECT_URL = "index"  
 LOGOUT_REDIRECT_URL = "index"
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

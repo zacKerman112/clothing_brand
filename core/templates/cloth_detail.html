@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="https://via.placeholder.com/500x400" class="img-fluid rounded shadow" alt="{{ item.title }}">
+        </div>
+        <div class="col-md-6">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'cloth_list' %}">Головна</a></li>
+                    <li class="breadcrumb-item active">{{ item.brand.name }}</li>
+                </ol>
+            </nav>
+            
+            <h1 class="display-4">{{ item.title }}</h1>
+            <p class="lead text-primary fw-bold fs-2">{{ item.price }} грн</p>
+            
+            <hr>
+            
+            <ul class="list-unstyled">
+                <li><strong>Колір:</strong> {{ item.cloth_color }}</li>
+                <li><strong>Розмір:</strong> {{ item.size }}</li>
+                <li><strong>В наявності:</strong> {{ item.stock_quantity }} шт.</li>
+            </ul>
+
+            <div class="d-flex gap-2 mt-4">
+                <a href="{% url 'cloth_update' item.pk %}" class="btn btn-warning">Редагувати</a>
+                <form action="{% url 'cloth_delete' item.pk %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Ви впевнені?')">Видалити</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
