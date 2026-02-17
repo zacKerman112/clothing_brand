@@ -12,4 +12,4 @@
 
 1. **Клонуйте репозиторій:**
    ```bash
-   git clone <посилання_на_твій_репозиторій>
+   git clone <https://github.com/zacKerman112/clothing_brand>
